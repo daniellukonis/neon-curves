@@ -46,12 +46,6 @@ class Point {
     return array;
   }
 
-  // static setBoundingLine(pointArray){
-    // pointArray[0].dx = pointArray[1].rx;
-    // pointArray[0].dy = pointArray[1].ry;
-    // pointArray[0].drawBoundingLine();
-  // }
-
   static drawBenz(context, pointArray){
     const c = context;
     const p0 = pointArray[0];
@@ -126,6 +120,8 @@ class Point {
     this.ad = Math.random() >= 0.5 ? 1 : -1;
     this.av = Math.PI / 360 * this.ad * Math.random();
 
+    this.strokeStyle = '#FFFFFF70';
+
     this.reverse = false;
 
   }
@@ -144,9 +140,8 @@ class Point {
   }
   drawBoundingLine({context:c} = this){
     c.save();
-    c.strokeStyle = '#FFFFFF70';
+    c.strokeStyle = this.strokeStyle;
     c.fillStyle = '#000';
-    // c.setLineDash([10,10]);
     c.beginPath();
     c.moveTo(this.rx, this.ry);
     c.lineTo(this.dx, this.dy);
@@ -156,7 +151,7 @@ class Point {
 
   drawCenterLine({context:c} = this){
     c.save();
-    c.strokeStyle = '#FFFFFF40';
+    c.strokeStyle = this.strokeStyle;
     c.fillStyle = '#000';
     c.beginPath();
     c.moveTo(this.x, this.y);
@@ -167,7 +162,7 @@ class Point {
 
   drawCenterPoint({context:c} = this){
     c.save();
-    c.strokeStyle = '#FFFFFF40';
+    c.strokeStyle = this.strokeStyle;
     c.fillStyle = '#000';
     c.beginPath();
     c.arc(this.x, this.y, this.rr, 0, this.fullArc)
@@ -178,7 +173,7 @@ class Point {
 
   drawCtrlPoint({context:c} = this){
     c.save();
-    c.strokeStyle = '#FFFFFF50';
+    c.strokeStyle = this.strokeStyle;
     c.fillStyle = '#000';
     c.beginPath();
     this.reverse ? c.arc(this.opx, this.opy, this.rr, 0, this.fullArc) : c.arc(this.rx, this.ry, this.rr, 0, this.fullArc);
@@ -192,10 +187,9 @@ class Point {
     c.strokeStyle = '#FFFFFF20';
     c.fillStyle = '#000';
     c.lineWidth = 6;
-    c.setLineDash(dash || [2,6]);
+    c.setLineDash(dash || [2,4]);
     c.beginPath();
     c.arc(this.x, this.y, this.r, 0, this.fullArc);
-    // c.fill();
     c.stroke();
     c.restore();
   }
@@ -216,18 +210,10 @@ class Point {
 
 const points = Point.createArray(canvas, context, 4);
 
-// setInterval(()=>{
-//   // fadeCanvas(canvas, context);
-//   clearCanvas(canvas, context);
-//   // fillCanvas(canvas, context);
-//   Point.animate(points);
-//   // Point.setBoundingLine(points);
-//   Point.drawBenz(context, points);
-// }, 10)
-
 function loop(){
   requestAnimationFrame(loop);
   clearCanvas(canvas, context);
+  // fadeCanvas(canvas, context);
   Point.animate(points);
   Point.drawBenz(context, points);
   return
